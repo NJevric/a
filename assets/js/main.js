@@ -1,9 +1,13 @@
 $(document).ready(function(){
+
+    navigacijaIspis();
     prikaziNavigaciju();
     active();
     $(document).scroll(navScroll);
     prikaziFilter();
     prikaziGetTicket();
+    
+   
 });
 
 function navScroll(){
@@ -72,6 +76,11 @@ function prikaziGetTicket(){
     })
 }
 
+
+
+// navigacija
+
+// navigacija za male ekrane
 function prikaziNavigaciju(){
    
     document.querySelector('#hamburger i').addEventListener('click',function(){
@@ -80,3 +89,46 @@ function prikaziNavigaciju(){
     })
     
 }
+
+// dinamicki ispis navigacije
+function navigacijaIspis(){
+
+    $.ajax({
+        url: "assets/data/nav.json",
+        method: "get",
+        dataType: "json",
+        success: function (data) {
+         
+            nav(data);
+     
+         
+        },
+        error:function(xhr){
+            console.log(xhr);
+        } 
+    });
+
+    function nav(data){
+
+        let htmlLogo='';
+        let htmlNav = '';
+
+        data.logo.forEach(i => {
+            htmlLogo+=`<a href="${i.href}">${i.prikaz}</a>`
+        })
+
+        data.meni.forEach(nav => {
+            htmlNav+=`<a href="${nav.href}">${nav.prikaz}</a>`;
+        });
+       
+        function ispis(div,html){
+            document.querySelector(div).innerHTML = html;
+        }
+
+        ispis('#logo',htmlLogo)
+        ispis('#links',htmlNav);
+        
+    }
+}
+
+

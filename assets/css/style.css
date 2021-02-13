@@ -30,7 +30,7 @@ nav{
     justify-content: space-between;
     margin:0px 30px;
 }
- nav #logo p{
+ nav #logo a{
     font-size:1.8em;
     font-weight: 600;
     
