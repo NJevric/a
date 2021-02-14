@@ -1,0 +1,14 @@
+[
+    {
+        "id":1,
+        "prikaz":"Release date"
+    },
+    {
+        "id":2,
+        "prikaz":"Duration"
+    },
+    {
+        "id":3,
+        "prikaz":"Duratin longest"
+    }
+]

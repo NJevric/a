@@ -1,0 +1,248 @@
+[
+    {
+        "id":1,
+        "img":{
+            "src":"",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            {
+                "naziv":"Action"
+            }
+        ],
+        "trajanje":{
+            "vreme":"108",
+            "ispis":"1hr 48min"
+        },
+        "datum":{
+            "date":"12.12.2020",
+            "ispis":"Dec 12,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+           
+    },
+    {
+        "id":2,
+        "img":{
+            "src":"assets/img/poster.jpg",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"95",
+            "ispis":"1hr 35min"
+        },
+        "datum":{
+            "date":"5.12.2020",
+            "ispis":"Dec 5,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    },
+    {
+        "id":3,
+        "img":{
+            "src":"",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            {
+                "naziv":"Action"
+            },
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"95",
+            "ispis":"1hr 35min"
+        },
+        "datum":{
+            "date":"2020-7-12",
+            "ispis":"Dec 7,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    },
+    {
+        "id":4,
+        "img":{
+            "src":"assets/img/poster.jpg",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            {
+                "naziv":"Action"
+            },
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"120",
+            "ispis":"2hr"
+        },
+        "datum":{
+            "date":"2020-12-12",
+            "ispis":"Dec 12,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    },
+    {
+        "id":5,
+        "img":{
+            "src":"assets/img/poster.jpg",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"82",
+            "ispis":"1hr 35min"
+        },
+        "datum":{
+            "date":"2020-12-12",
+            "ispis":"Dec 12,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    },
+    {
+        "id":6,
+        "img":{
+            "src":"assets/img/poster.jpg",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            {
+                "naziv":"Action"
+            },
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"95",
+            "ispis":"1hr 35min"
+        },
+        "datum":{
+            "date":"2020-12-12",
+            "ispis":"Dec 12,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    },
+    {
+        "id":7,
+        "img":{
+            "src":"assets/img/poster.jpg",
+            "alt":"Slika"
+        },
+        "naslov":"Naslov",
+        "kategorija":[
+            {
+                "naziv":"Action"
+            },
+            {
+                "naziv":"Adventure"
+            }
+        ],
+        "trajanje":{
+            "vreme":"95",
+            "ispis":"1hr 35min"
+        },
+        "datum":{
+            "date":"2020-12-12",
+            "ispis":"Dec 12,2020"
+        },
+        "projekcija":[
+            {
+                "vremePrikazivanja":"12:45"
+            },
+            {
+                "vremePrikazivanja":"15:45"
+            },
+            {
+                "vremePrikazivanja":"17:45"
+            }
+        ]
+
+    }
+
+]

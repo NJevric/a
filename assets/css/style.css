@@ -352,14 +352,22 @@ main #filmovi{
 
 
 /* CALENDAR */
+main #podnaslov{
+    width: 65%;
+    margin:0px auto;
+}
 main #datumi{
     width:65%;
     margin:0px auto;
     padding:100px 0px;
+    display: flex;
+    flex-wrap: wrap;
     
 }
 main #datumi .datum{
-    padding-bottom: 50px;
+    padding-bottom: 20px;
+    width:23%;
+    
    
  
 }
@@ -467,7 +475,7 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
     padding-left: 10px;
     margin-bottom: 20px;
   
-    background-color: rgba(17,17,17,0.8);
+    background-color: rgba(17,17,17,0.9);
     border:0px;
     color:#fff;
     border-radius: 3px;
@@ -476,7 +484,7 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
     height:150px;
     resize: none;
     border:0px;
-    background-color: rgba(17,17,17,0.8);
+    background-color: rgba(17,17,17,.9);
     border-radius: 3px;
     padding:10px;
     margin-bottom:20px;
@@ -529,9 +537,9 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
 }
 /* FOOTER */
 footer{
-   padding-bottom: 30px;
     width:100%;
     color:#fafafa;
+    position:relative;
 }
 footer #wrapperFoo{
     width: 65%;
@@ -542,7 +550,7 @@ footer #gornjiFoo{
     height:90%;
     display:flex;
     justify-content: space-between;
-    
+   
 }
 footer #gornjiFoo h4{
     font-size:1.2em;
@@ -577,10 +585,14 @@ footer #gornjiFoo .latestMovies{
     display: flex;
     flex-direction: column;
 }
-footer #gornjiFoo .latestMovies a{
+footer #gornjiFoo .latestMovies .linksFoo{
+    display: flex;
+    flex-direction: column;
+}
+footer #gornjiFoo .latestMovies .linksFoo a{
     padding:5px 0px;
     font-family: 'Open Sans', sans-serif;
-    color:#fafafa;
+    color:#fff;
 }
 
 footer #gornjiFoo .kontaktInfoFoo .info{
@@ -593,18 +605,25 @@ footer #gornjiFoo .kontaktInfoFoo .info a{
     color:#fafafa;
 }
 footer #donjiFoo{
-    height:10%;
+    /* height:10%; */
     display:flex;
-    
+    position:absolute;
+    bottom:20px;
+    width:65%;
     justify-content: space-between;
 }
 footer #donjiFoo #leviBlok{
+    
     padding-top:15px;
+    position:relative;
+    left:0px;
     font-family: 'Open Sans', sans-serif;
 }
 
 footer #donjiFoo #desniBlok{
     font-size:1.6em;
+    position:relative;
+    left:0px;
 }
 footer #donjiFoo #desniBlok i{
     padding:0px 10px;
@@ -703,7 +722,7 @@ footer #donjiFoo #desniBlok i{
     header #naslov{
         padding-top:150px;
     }
-    header #naslov, main #about,main #komentari, main #projekcija,footer #wrapperFoo,main #filmovi,main #datumi,#contact
+    header #naslov, main #about,main #komentari, main #projekcija,footer #wrapperFoo,main #filmovi,main #datumi,#contact,footer #donjiFoo
     {
         width:75%;
     }
@@ -763,9 +782,7 @@ footer #donjiFoo #desniBlok i{
         margin-top:50px;
         width: 100%;
     }
-    footer{
-        
-    }
+   
     footer #gornjiFoo {
        flex-direction: column;
     }
