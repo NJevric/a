@@ -200,9 +200,6 @@
                 "vremePrikazivanja":"12:45"
             },
             {
-                "vremePrikazivanja":"15:45"
-            },
-            {
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -234,12 +231,6 @@
         "projekcija":[
             {
                 "vremePrikazivanja":"12:45"
-            },
-            {
-                "vremePrikazivanja":"15:45"
-            },
-            {
-                "vremePrikazivanja":"17:45"
             }
         ]
 

@@ -47,9 +47,19 @@
             <div id="forma">
                 <h2>Send us a message</h2>
                 <form action="#" method="POST" id="kontaktForma">
-                    <input type="text" name="ime" id="ime" placeholder="Name"/>
-                    <input type="email" name="email" id="email" placeholder="Email Address"/>
-                    <textarea id="poruka" name="poruka" placeholder="Message"></textarea>
+                    <div class='group'>
+                        <input type="text" name="ime" id="ime" placeholder="Name"/>
+                        <p class='err'></p>
+                    </div>
+                    <div class='group'>
+                        <input type="email" name="email" id="email" placeholder="Email Address"/>
+                        <p class='err'></p>
+                    </div>
+                    <div class='group'>
+                        <textarea id="poruka" name="poruka" placeholder="Message"></textarea>
+                        <p class='err'></p>
+                    </div>
+                    
                     <input type="submit" name="submit" id="submit" value="Submit"/>
                 </form>
             </div>
@@ -77,11 +87,9 @@
                 </div>
                 <div class="latestMovies">
                     <h4>Movies</h4>
-                    <a href="">Lorem, ipsum.</a>
-                    <a href="">Lorem, ipsum.</a>
-                    <a href="">Lorem, ipsum.</a>
-                    <a href="">Lorem, ipsum.</a>
-                    <a href="">Lorem, ipsum.</a>
+                    <div id="linksFoo">
+               
+                    </div>
                    
                 </div>
                 <div class="kontaktInfoFoo">

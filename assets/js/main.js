@@ -5,10 +5,12 @@ $(document).ready(function(){
     movies();
     calendar();
     contact();
-    
+    footer();
+
 });
 
 let url = location.href;
+
 
 // AJAX CALLBACK
 function ajax(url,success){
@@ -173,7 +175,7 @@ function movies(){
             
             
         }
-        sort();
+       
         function sortIspis(data){
     
             let htmlSort = `  <select id="sort">
@@ -190,11 +192,13 @@ function movies(){
             
            
         }
-        // sort();
+        sort();
        
        
         //filter
         function filter(){
+
+           
 
             function prikaziFilter(){
                 document.querySelector('#pocetniPrikazFilter').addEventListener('click',function(){
@@ -207,22 +211,29 @@ function movies(){
             ajax("assets/data/filter.json",function(data){
                 filterIspis(data);
                
-                
+                 // filtriranje
+                var checkbox = document.querySelectorAll("input[name=chb]");
+                checkbox.forEach(i => {
+                    i.addEventListener('change', filterLogic);
+                })
             });
-            function filterIspis(data){
-                
-                let htmlFilter = ``;
-                data.forEach(i => {
-                    htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" data-id="${i.id}"/><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
-                });
-               
-                ispis('#zanrovi',htmlFilter);
-
-            }
+            
         }
+        function filterIspis(data){
+                
+            let htmlFilter = ``;
+            data.forEach(i => {
+                htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" value="${i.id}" data-id="${i.id}"/><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
+            });
+           
+            ispis('#zanrovi',htmlFilter);
 
+            
+            
+        }
         filter();
         
+
         
         //ispis filmova
         function filmovi(){
@@ -231,10 +242,6 @@ function movies(){
                 filmoviIspis(data);
                 
             });
-           
-           
-            
-           
            
         }
         filmovi();
@@ -279,11 +286,55 @@ function movies(){
                 })
             }
             prikaziGetTicket();
-            
-
-            
+           
             
         }
+        let arrChb = [];
+        
+        function filterLogic(){
+           
+        
+           let izabran = this.value;
+           console.log(izabran);
+           if(arrChb.includes(izabran)){
+                arrChb=arrChb.filter(i=>{
+                    return i!=izabran;
+                });
+            }
+           else{
+                arrChb.push(izabran);
+           }
+
+           ajax('assets/data/filmovi.json',function(data){
+
+                ispisFiltriranihFilmova(data);
+
+           });
+
+           function ispisFiltriranihFilmova(data){
+
+                let ispis = [];
+                ispis = data.filter( i => {
+                    if(arrChb.length!=0){
+                        
+                        for(let j in arrChb){
+                            if(arrChb[j] == i.id){
+                                return true;
+                            }
+                        }
+
+                    }
+                    else{
+                        // ako je niz prazan prikazi sve filmove
+                        return true;
+                    }
+                });
+             
+                filmoviIspis(ispis);
+            
+           }
+        }
+        
         function sortLogic(){
            
                 let el = document.querySelector('#sort');
@@ -326,6 +377,8 @@ function movies(){
         }
         $("body").on("change","#sort",sortLogic);
         
+      
+     
     }
     
 }
@@ -381,7 +434,76 @@ function calendar(){
 }
 function contact(){
     if(url.indexOf('contact.html')!=-1){
-        console.log('a');
+
+        let forma = document.querySelector('#kontaktForma');
+        let ime = document.querySelector('#ime');
+        let email = document.querySelector('#email');
+        let poruka = document.querySelector('#poruka');
+        let submit = document.querySelector('#submit');
+        let err=0;
+        function greska(input, vrednost){
+            input.style.border = '2px solid red';
+            let div = input.parentElement;
+            let greskaPrikaz = div.querySelector('p');
+            greskaPrikaz.innerHTML = vrednost;
+            err=1;
+        }
+
+        function uspeh(input){
+            input.style.border = '2px solid #19B5FE';
+        }
+
+        function obaveznaPolja(arr){
+            arr.forEach(i=>{
+                console.log(arr);
+                if(i.value.trim()==''){
+                    greska(i,`Field is required`);
+                }
+                else{
+                    uspeh(i);
+                    return true;
+                }
+            });
+        }
+
+        function proveraDuzine(input, min, max){
+            if(input.value.length < min){
+                greska(input,`Field must contain min ${min} characters`);
+            }
+            else if(input.value.length > max){
+                greska(input,`Field must contain max ${max} characters`);
+            }
+            else{
+                uspeh(input);
+                return true;
+            }
+        }
+
+        function regProvera(input,reg){
+            
+            if(!reg.test(input.value)){
+                greska(input,'Invalid input');
+            }
+            else{
+                uspeh(input);
+                return true;
+            }
+        }
+        
+        submit.addEventListener('click',function(e){
+            e.preventDefault();
+            obaveznaPolja([ime,email,poruka]);
+
+            proveraDuzine(ime,3,80);
+            proveraDuzine(poruka,3,300);
+            regProvera(email,/^\w[.\d\w]*\@[a-z]{2,10}(\.[a-z]{2,3})+$/);
+            regProvera(ime,/^[A-ZŠĐŽČĆ][a-zšđžčć]{2,15}(\s[A-ZŠĐŽČĆ][a-zšđžčć]{2,15})*$/);
+        
+            if(err==0){
+                alert('You have successfully sent us a message.');
+                location.reload();
+            }
+        });
     }
 }
 
@@ -389,4 +511,23 @@ function contact(){
 
 
 
+// footer
 
+function footer(){
+    let klasa = document.querySelector('.latestMovies');
+    ajax('assets/data/filmovi.json',function(data){
+        let filmovi = data.naslov;
+        console.log(data);
+        let broj = 0; 
+        let htmlFooterFilmovi = '';
+        for(let i of data){
+            console.log(i.naslov);
+            broj++;
+            htmlFooterFilmovi +=`<a href="movies.html">${i.naslov}</a>` 
+            if(broj==5){
+                break;
+            }
+        }
+        ispis('#linksFoo',htmlFooterFilmovi);
+    })
+}
