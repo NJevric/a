@@ -7,10 +7,17 @@ $(document).ready(function(){
     contact();
     footer();
 
+    
+
 });
 
 let url = location.href;
 
+// local storage
+function setLsItems(data){
+    let id = data.map(i=>i.id);
+    localStorage.setItem('idFilm',JSON.stringify(id));
+}
 
 // AJAX CALLBACK
 function ajax(url,success){
@@ -241,10 +248,32 @@ function movies(){
             ajax("assets/data/filmovi.json",function(data){
                 filmoviIspis(data);
                 
+                let ls = localStorage.getItem('idFilm');
+                console.log(ls);
+                console.log(data);
+
+                if(ls!=null && ls.length!=0){
+                
+                    data.sort(function(a, b){  
+                        return ls.indexOf(a.id) - ls.indexOf(b.id);
+                    });
+
+                    console.log(data);
+                    filmoviIspis(data);  
+                    sortLogic();
+
+                    
+
+                }
+
+
+
+            
             });
            
         }
         filmovi();
+        
         function filmoviIspis(data){
                 
             let htmlFilmovi = ``;
@@ -287,31 +316,32 @@ function movies(){
             }
             prikaziGetTicket();
            
-            
+           
         }
+
+        
         let arrChb = [];
         
         function filterLogic(){
            
-        
-           let izabran = this.value;
-           console.log(izabran);
-           if(arrChb.includes(izabran)){
-                arrChb=arrChb.filter(i=>{
-                    return i!=izabran;
-                });
+            let izabran = this.value;
+            console.log(izabran);
+            if(arrChb.includes(izabran)){
+                    arrChb=arrChb.filter(i=>{
+                        return i!=izabran;
+                    });
+                }
+            else{
+                    arrChb.push(izabran);
             }
-           else{
-                arrChb.push(izabran);
-           }
+            console.log(arrChb);
+            ajax('assets/data/filmovi.json',function(data){
+                    
+                    ispisFiltriranihFilmova(data);
 
-           ajax('assets/data/filmovi.json',function(data){
+            });
 
-                ispisFiltriranihFilmova(data);
-
-           });
-
-           function ispisFiltriranihFilmova(data){
+            function ispisFiltriranihFilmova(data){
 
                 let ispis = [];
                 ispis = data.filter( i => {
@@ -331,8 +361,8 @@ function movies(){
                 });
              
                 filmoviIspis(ispis);
-            
-           }
+                setLsItems(ispis);
+            }
         }
         
         function sortLogic(){
@@ -341,6 +371,19 @@ function movies(){
                 console.log(el);
                 let arr = [];
                 ajax('assets/data/filmovi.json',function(data){
+
+                    if(localStorage.getItem('idFilm')){
+                        
+                        let ls = localStorage.getItem('idFilm');
+                        data = data.filter(i=>{
+                            return localStorage.getItem('idFilm').includes(i.id);
+                        });
+
+
+                        data.sort(function(a, b){  
+                            return ls.indexOf(a.id) - ls.indexOf(b.id);
+                        });
+                    }
 
                     for(let i of data){
                         arr.push(i);  
@@ -369,8 +412,11 @@ function movies(){
                     else{
                         filmoviIspis(data);
                     }
-                    filmoviIspis(arr);
 
+                    filmoviIspis(arr);
+                    setLsItems(arr);
+                    
+                    
                 });
                 
                 console.log(arr);
@@ -506,9 +552,6 @@ function contact(){
         });
     }
 }
-
-
-
 
 
 // footer
