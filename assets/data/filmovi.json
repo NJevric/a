@@ -5,9 +5,10 @@
             "src":"",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov1",
         "kategorija":[
             {
+                "idKat":1,
                 "naziv":"Action"
             }
         ],
@@ -21,12 +22,15 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"15:45"
             },
             {
+                "idProjekcija":3,
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -38,10 +42,11 @@
             "src":"assets/img/poster.jpg",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov2",
         "kategorija":[
             
             {
+                "idKat":2,
                 "naziv":"Adventure"
             }
         ],
@@ -55,14 +60,14 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"15:45"
-            },
-            {
-                "vremePrikazivanja":"17:45"
             }
+            
         ]
 
     },
@@ -72,7 +77,7 @@
             "src":"",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov3",
         "kategorija":[
             {
                 "naziv":"Action"
@@ -91,12 +96,15 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"15:45"
             },
             {
+                "idProjekcija":3,
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -108,12 +116,14 @@
             "src":"assets/img/poster.jpg",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov4",
         "kategorija":[
             {
+                "idKat":1,
                 "naziv":"Action"
             },
             {
+                "idKat":2,
                 "naziv":"Adventure"
             }
         ],
@@ -127,12 +137,15 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"15:45"
             },
             {
+                "idProjekcija":3,
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -144,10 +157,11 @@
             "src":"assets/img/poster.jpg",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov5",
         "kategorija":[
             
             {
+                "idKat":2,
                 "naziv":"Adventure"
             }
         ],
@@ -161,12 +175,15 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"15:45"
             },
             {
+                "idProjekcija":3,
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -178,12 +195,14 @@
             "src":"assets/img/poster.jpg",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov6",
         "kategorija":[
             {
+                "idKat":1,
                 "naziv":"Action"
             },
             {
+                "idKat":2,
                 "naziv":"Adventure"
             }
         ],
@@ -197,9 +216,11 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             },
             {
+                "idProjekcija":2,
                 "vremePrikazivanja":"17:45"
             }
         ]
@@ -211,12 +232,14 @@
             "src":"assets/img/poster.jpg",
             "alt":"Slika"
         },
-        "naslov":"Naslov",
+        "naslov":"Naslov7",
         "kategorija":[
             {
+                "idKat":1,
                 "naziv":"Action"
             },
             {
+                "idKat":2,
                 "naziv":"Adventure"
             }
         ],
@@ -230,6 +253,7 @@
         },
         "projekcija":[
             {
+                "idProjekcija":1,
                 "vremePrikazivanja":"12:45"
             }
         ]

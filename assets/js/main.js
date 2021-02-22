@@ -7,8 +7,7 @@ $(document).ready(function(){
     contact();
     footer();
 
-    
-
+  
 });
 
 let url = location.href;
@@ -220,19 +219,32 @@ function movies(){
                
                  // filtriranje
                 var checkbox = document.querySelectorAll("input[name=chb]");
+                let ls = localStorage.getItem('idFilm');
+                console.log(ls);
                 checkbox.forEach(i => {
                     i.addEventListener('change', filterLogic);
+                   
+                    for(let j of ls){
+                        if(i.value.includes(j)){
+                            console.log(i.value);
+                        }
+                    }
+                    
                 })
+                  //cekiraj filtere iz ls-a
+               
+                
+                
             });
             
         }
         function filterIspis(data){
                 
-            let htmlFilter = ``;
+            let htmlFilter = `<form>`;
             data.forEach(i => {
-                htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" value="${i.id}" data-id="${i.id}"/><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
+                htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" value="${i.id}" data-id="${i.id}"/class="zanrChb"><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
             });
-           
+            htmlFilter+=`</form>`;
             ispis('#zanrovi',htmlFilter);
 
             
@@ -280,7 +292,7 @@ function movies(){
             data.forEach(i => {
                 htmlFilmovi+=`<div class="film">
                 <img src="${i.img.src}" alt="${i.img.alt}"/>
-                <h2>${i.naslov}</h2>
+                <h2 class="naslov">${i.naslov}</h2>
                 <div class="genre">`
                     for(let j of i.kategorija){
                         htmlFilmovi+=` <p>${j.naziv}</p>`
@@ -345,10 +357,12 @@ function movies(){
 
                 let ispis = [];
                 ispis = data.filter( i => {
+                    
                     if(arrChb.length!=0){
                         
-                        for(let j in arrChb){
-                            if(arrChb[j] == i.id){
+                        for(let j of arrChb){
+                            for(let k of i.kategorija)
+                            if(j == k.idKat){
                                 return true;
                             }
                         }
@@ -423,7 +437,84 @@ function movies(){
         }
         $("body").on("change","#sort",sortLogic);
         
-      
+        
+        function ticket(){
+            console.log('karta');
+            let get = document.getElementsByClassName('get');
+          
+            for(let i of get){
+                i.addEventListener('click',function(e){
+                    e.preventDefault();
+                    
+                });
+            }
+            ajax("assets/data/filmovi.json",function(data){
+                ispisForme(data);
+                
+            });
+            function ispisForme(data){
+                let html = '';
+                
+                html+=`<form action="#" method="POST" id="formaGetTicket">
+                <div class="form-group">
+                    <label for="imeFilm">Movie Name</label>
+                    <!-- <input type="text" id="movieName" name="movieName" value="Naslov"/> -->
+                    <select id="imeFilm">
+                        <option value="0">Choose Movie</option>`
+                        for(let i of data){
+                            html+=`<option value="${i.id}">${i.naslov}</option>`
+                        }
+                        html+=`
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="broj">Ticket Sum</label>
+                    <input type="number" min="0" id="broj" name="broj" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="time">Screening time</label>
+                    <select id="time">
+                        <option value="0">Choose Screening Time</option>
+                        
+                        
+                    </select>
+                </div>
+                <input type="submit" id="submitTicket" name="submitTicket" value="Order Ticket"/>
+                </form>`
+              
+               
+                document.querySelector('#donjiGetTicket').innerHTML=html;
+                
+                function ispisProjekcije(){
+                    let film = document.querySelector('#imeFilm');
+                    film.addEventListener('change',function(){
+                        if(film.value!=0){
+                           
+                            let izabran = film.value;
+                            console.log(izabran);
+                            let izabranFilmJson = --izabran;
+                            console.log(izabranFilmJson);
+                            console.log(data[izabranFilmJson]);
+                            console.log(data[izabranFilmJson].projekcija);
+
+                            let htmlProjekcija = '';
+                            for(let i of data[izabran].projekcija){
+                                htmlProjekcija+=`<option value='${i.idProjekcija}'>${i.vremePrikazivanja}</option>`
+                            }
+                            document.querySelector('#time').innerHTML=htmlProjekcija;
+                        }
+                        else{
+                            htmlProjekcija = '';
+                            document.querySelector('#time').innerHTML=htmlProjekcija;
+                        }
+                    })
+                }
+                ispisProjekcije();
+                
+            }
+          
+        }
+        ticket();
      
     }
     
