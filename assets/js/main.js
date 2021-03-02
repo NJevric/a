@@ -1,4 +1,10 @@
-$(document).ready(function(){
+window.onerror = (message,source,lineno) => {
+    console.log(`ErrMessage ${message}`);
+    console.log(`Url ${source}`);
+    console.log(`Error is on line ${lineno}`);
+}
+
+window.onload = () => {
 
     navigacija();
     index();
@@ -8,11 +14,26 @@ $(document).ready(function(){
     orders();
     footer();
 
-    
-  
-});
+};
 
-let url = location.href;
+const base = 'assets/data/';
+
+//pageLocation
+function pageLoc(page){
+
+    let url = location.href;
+    try{
+        let arr = ['index.html','movies.html','calendar.html','contact.html','author.html','orders.html'];
+        if(!arr.includes(page)){
+            throw new Error(`Bad url input ${page}`);
+        }
+        return url.indexOf(page)!=-1;
+    }
+    catch(err){
+        console.log(err);
+    }
+   
+}
 
 // local storage
 function setLsItems(data){
@@ -39,94 +60,93 @@ function ispis(div,html){
 }
 
 // navigacija
-function navigacija(){
-//navigacija animacija
-function navScroll(){
-    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 80) {
-        $('nav').css({
-            "transition":".5s ease",
-            "padding-bottom": "0px"
-        });
-        $('#logo a').css({
-            'font-size':'1.6em',
-            "transition":".3s ease",
-            "margin-bottom":"10px",
-            "margin-top":"-5px"
-        });
-        
-        $('nav #links').css({
-            'transition':'.3s',
-            'margin-top':'0px'
-        });
-    }
-    else{
-        $('nav').css({
-            "padding-bottom": "15px"
-        });
-        $('#logo a').css({
-            'font-size':'1.8em',
-            "margin":"0px"
-        });
-        
-        $('nav #links').css({
-            "margin":"10px 0px"
-        });
-    }  
-}
-$(document).scroll(navScroll);
-// navigacija za male ekrane
-function prikaziNavigaciju(){
-   
-    document.querySelector('#hamburger i').addEventListener('click',function(){
-        document.querySelector('#links').classList.toggle('otvoriNav');
-        
-    })
-    
-}
-prikaziNavigaciju();
-// dinamicki ispis navigacije
-function navigacijaIspis(){
-    
-    ajax("assets/data/nav.json",function(data){
-        nav(data);
-    })
-   
-    function nav(data){
-
-        let htmlLogo='';
-        let htmlNav = '';
-
-        data.logo.forEach(i => {
-            htmlLogo+=`<a href="${i.href}">${i.prikaz}</a>`
-        })
-
-        data.meni.forEach(nav => {
-            htmlNav+=`<a href="${nav.href}" class="">${nav.prikaz}</a>`;
-        });
-
-        ispis('#logo',htmlLogo);
-        ispis('#links',htmlNav);
-       
-        function active(){
-            let url = window.location.pathname.slice(1);
-            console.log(url);
-            $('#links').find('a').each(function() {
-                $(this).toggleClass('active', $(this).attr('href') == url);
+const navigacija = () => {
+    //navigacija animacija
+    function navScroll(){
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 80) {
+            $('nav').css({
+                "transition":".5s ease",
+                "padding-bottom": "0px"
+            });
+            $('#logo a').css({
+                'font-size':'1.6em',
+                "transition":".3s ease",
+                "margin-bottom":"10px",
+                "margin-top":"-5px"
+            });
+            
+            $('nav #links').css({
+                'transition':'.3s',
+                'margin-top':'0px'
             });
         }
-        active();
+        else{
+            $('nav').css({
+                "padding-bottom": "15px"
+            });
+            $('#logo a').css({
+                'font-size':'1.8em',
+                "margin":"0px"
+            });
+            
+            $('nav #links').css({
+                "margin":"10px 0px"
+            });
+        }  
+    }
+    $(document).scroll(navScroll);
+    // navigacija za male ekrane
+    function prikaziNavigaciju(){
+    
+        document.querySelector('#hamburger i').addEventListener('click',function(){
+            document.querySelector('#links').classList.toggle('otvoriNav');
+            
+        })
         
     }
-}
-navigacijaIspis();
+    prikaziNavigaciju();
+    // dinamicki ispis navigacije
+    function navigacijaIspis(){
+        
+        ajax(`${base}nav.json`,function(data){
+            nav(data);
+        })
+    
+        function nav(data){
+
+            let htmlLogo='';
+            let htmlNav = '';
+
+            data.logo.forEach(i => {
+                htmlLogo+=`<a href="${i.href}">${i.prikaz}</a>`
+            })
+
+            data.meni.forEach(nav => {
+                htmlNav+=`<a href="${nav.href}" class="">${nav.prikaz}</a>`;
+            });
+
+            ispis('#logo',htmlLogo);
+            ispis('#links',htmlNav);
+        
+            function active(){
+                let url = window.location.pathname.slice(1);
+                console.log(url);
+                $('#links').find('a').each(function() {
+                    $(this).toggleClass('active', $(this).attr('href') == url);
+                });
+            }
+            active();
+            
+        }
+    }
+    navigacijaIspis();
 }
 
-
-function index(){
-    if(url.indexOf('index.html')!=-1){
+const index = () => {
+    if(pageLoc('index.html')){
         
         function perks(){
-            ajax("assets/data/perks.json",function(data){
+            ajax(`${base}perks.json`,function(data){
                 perksIspis(data);
             });
             function perksIspis(data){
@@ -166,25 +186,15 @@ function index(){
 }
 
 
-function movies(){
+const movies = () => {
     
-      
-    if(url.indexOf('movies.html')!=-1){
+    if(pageLoc('movies.html')){
         
-       
-        
-        function sort(){
-           
-            ajax("assets/data/sort.json",function(data){
-                sortIspis(data);
-               
-            });
+        // ispis sort ddl
+        ajax(`${base}sort.json`,function(data){
+            sortIspis(data);
+        });   
     
-          
-            
-            
-        }
-       
         function sortIspis(data){
     
             let htmlSort = `  <select id="sort">
@@ -196,18 +206,12 @@ function movies(){
 
             htmlSort+=`</select>`;
 
-            
             ispis('#sortHtml',htmlSort);
             
-           
         }
-        sort();
        
-       
-        //filter
+        //ispis filter ddl
         function filter(){
-
-           
 
             function prikaziFilter(){
                 document.querySelector('#pocetniPrikazFilter').addEventListener('click',function(){
@@ -215,9 +219,10 @@ function movies(){
                     
                 });
             }
+
             prikaziFilter();
 
-            ajax("assets/data/filter.json",function(data){
+            ajax(`${base}filter.json`,function(data){
                 filterIspis(data);
                
                  // filtriranje
@@ -234,55 +239,43 @@ function movies(){
                     }
                     
                 })
-                  //cekiraj filtere iz ls-a
-               
-                
-                
+                 
             });
-            
-        }
-        function filterIspis(data){
-                
-            let htmlFilter = `<form>`;
-            data.forEach(i => {
-                htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" value="${i.id}" data-id="${i.id}"/class="zanrChb"><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
-            });
-            htmlFilter+=`</form>`;
-            ispis('#zanrovi',htmlFilter);
 
-            
-            
+            function filterIspis(data){
+                
+                let htmlFilter = `<form>`;
+                data.forEach(i => {
+                    htmlFilter+=`<input type="checkbox" name="chb" id="${i.prikaz}" value="${i.id}" data-id="${i.id}"/class="zanrChb"><span>${i.prikaz.slice(0,1).toUpperCase() + i.prikaz.slice(1)}</span><br/>`;
+                });
+                htmlFilter+=`</form>`;
+                ispis('#zanrovi',htmlFilter);
+
+            }
         }
+
         filter();
-        
-
         
         //ispis filmova
         function filmovi(){
             
-            ajax("assets/data/filmovi.json",function(data){
+            ajax(`${base}filmovi.json`,function(data){
                 filmoviIspis(data);
                 
                 let ls = localStorage.getItem('idFilm');
-                console.log(ls);
-                console.log(data);
-
+            
                 if(ls!=null && ls.length!=0){
                 
                     data.sort(function(a, b){  
                         return ls.indexOf(a.id) - ls.indexOf(b.id);
                     });
 
-                    console.log(data);
                     filmoviIspis(data);  
                     sortLogic();
 
                     
 
                 }
-
-
-
             
             });
            
@@ -334,26 +327,24 @@ function movies(){
            
         }
 
-        
         let arrChb = [];
         
         function filterLogic(){
            
             let izabran = this.value;
-            console.log(izabran);
+        
             if(arrChb.includes(izabran)){
-                    arrChb=arrChb.filter(i=>{
-                        return i!=izabran;
-                    });
-                }
-            else{
-                    arrChb.push(izabran);
+                arrChb=arrChb.filter(i=>{
+                    return i!=izabran;
+                });
             }
-            console.log(arrChb);
-            ajax('assets/data/filmovi.json',function(data){
-                    
-                    ispisFiltriranihFilmova(data);
-
+            else{
+                arrChb.push(izabran);
+            }
+            
+            ajax(`${base}filmovi.json`,function(data){    
+                ispisFiltriranihFilmova(data);
+               
             });
 
             function ispisFiltriranihFilmova(data){
@@ -364,30 +355,36 @@ function movies(){
                     if(arrChb.length!=0){
                         
                         for(let j of arrChb){
-                            for(let k of i.kategorija)
-                            if(j == k.idKat){
-                                return true;
+                            for(let k of i.kategorija){
+                                if(j == k.idKat){
+                                    return true;
+                                }
                             }
                         }
-
                     }
+                   
                     else{
                         // ako je niz prazan prikazi sve filmove
                         return true;
                     }
+                
                 });
-             
+                if(ispis.length === 0){
+                    alert('There seems to be no movies for this type of filters');
+                }
+                console.log(ispis.length);
                 filmoviIspis(ispis);
                 setLsItems(ispis);
             }
+           
         }
         
         function sortLogic(){
            
                 let el = document.querySelector('#sort');
-                console.log(el);
                 let arr = [];
-                ajax('assets/data/filmovi.json',function(data){
+
+                ajax(`${base}filmovi.json`,function(data){
 
                     if(localStorage.getItem('idFilm')){
                         
@@ -395,7 +392,6 @@ function movies(){
                         data = data.filter(i=>{
                             return localStorage.getItem('idFilm').includes(i.id);
                         });
-
 
                         data.sort(function(a, b){  
                             return ls.indexOf(a.id) - ls.indexOf(b.id);
@@ -405,34 +401,46 @@ function movies(){
                     for(let i of data){
                         arr.push(i);  
                     }
-                    
+                    function sortiraj(exec){
+                        arr.sort(exec);
+                    }
+
+                    if(el.value == 0){
+                       sortiraj(function(a,b){
+                            return a.id-b.id;
+                       })
+                    }
                     if(el.value == 1){
-                        arr.sort(function(a,b){
+                        sortiraj(function(a,b){
                             a = a.datum.date.split('.');
                             b = b.datum.date.split('.');
                             return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
-                        });
-                        console.log(arr);
+                        })
                     }
                     if(el.value == 2){
-                        arr.sort(function(a,b){
-                            return a.trajanje.vreme-b.trajanje.vreme;
+                        sortiraj(function(a,b){
+                            a = a.datum.date.split('.');
+                            b = b.datum.date.split('.');
+                            return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
                         });
-                        console.log(arr);
                     }
                     if(el.value == 3){
-                        arr.sort(function(a,b){
+                        sortiraj(function(a,b){
+                            return a.trajanje.vreme-b.trajanje.vreme;
+                        });
+                    }
+                    if(el.value == 4){
+                        sortiraj(function(a,b){
                             return b.trajanje.vreme - a.trajanje.vreme;
                         });
-                        console.log(arr);
                     }
+                   
                     else{
                         filmoviIspis(data);
                     }
 
                     filmoviIspis(arr);
                     setLsItems(arr);
-                    
                     
                 });
                 
@@ -443,19 +451,14 @@ function movies(){
         
         function ticket(){
             
-           
-
-
-            console.log('karta');
             let get = document.getElementsByClassName('get');
           
             for(let i of get){
                 i.addEventListener('click',function(e){
                     e.preventDefault();
-                    
                 });
             }
-            ajax("assets/data/filmovi.json",function(data){
+            ajax(`${base}filmovi.json`,function(data){
                 ispisForme(data);
                 
             });
@@ -490,7 +493,8 @@ function movies(){
                 </form>`
               
                
-                document.querySelector('#donjiGetTicket').innerHTML=html;
+            
+                ispis('#donjiGetTicket',html);
                 
                 function ispisProjekcije(){
                     let film = document.querySelector('#imeFilm');
@@ -498,32 +502,30 @@ function movies(){
                         if(film.value!=0){
                            
                             let izabran = film.value;
-                            console.log(izabran);
                             let izabranFilmJson = --izabran;
-                            console.log(izabranFilmJson);
-                            console.log(data[izabranFilmJson]);
-                            console.log(data[izabranFilmJson].projekcija);
-
+                    
                             let htmlProjekcija = '';
                             for(let i of data[izabran].projekcija){
                                 htmlProjekcija+=`<option value='${i.idProjekcija}'>${i.vremePrikazivanja}</option>`
                             }
-                            document.querySelector('#time').innerHTML=htmlProjekcija;
+                           
+                            ispis('#time',htmlProjekcija);
                         }
                         else{
                             htmlProjekcija = '';
-                            document.querySelector('#time').innerHTML=htmlProjekcija;
+                          
+                            ispis('#time',htmlProjekcija);
                         }
                     })
                 }
                 ispisProjekcije();
                 
                 function dohvatiPodatkeIzForme(){
-                    let forma = document.querySelector('#formaGetTicket');
-                    let film = document.querySelector('#imeFilm');
-                    let brojKarte = document.querySelector('#broj');
-                    let projekcija = document.querySelector('#time');
-                    let submit = document.querySelector('#submitTicket');
+                    const forma = document.querySelector('#formaGetTicket');
+                    const film = document.querySelector('#imeFilm');
+                    const brojKarte = document.querySelector('#broj');
+                    const projekcija = document.querySelector('#time');
+                    const submit = document.querySelector('#submitTicket');
                     console.log(projekcija);
                     
                     submit.addEventListener('click',function(e){
@@ -598,7 +600,7 @@ function movies(){
                         }
                         
                         alert('Your order is in orders page');
-                        // location.reload();
+                        location.reload();
                     }
                 }
                 dohvatiPodatkeIzForme();
@@ -613,10 +615,10 @@ function movies(){
     
 }
 
-function calendar(){
-    if(url.indexOf('calendar.html')!=-1){
+const calendar= () =>{
+    if(pageLoc('calendar.html')){
         function datumi(){
-            ajax("assets/data/filmovi.json",function(data){
+            ajax(`${base}filmovi.json`,function(data){
                 datumiIspis(data);
                 
             });
@@ -662,14 +664,14 @@ function calendar(){
         podnaslov();
     }
 }
-function contact(){
-    if(url.indexOf('contact.html')!=-1){
+const contact = () =>{
+    if(pageLoc('contact.html')){
 
-        let forma = document.querySelector('#kontaktForma');
-        let ime = document.querySelector('#ime');
-        let email = document.querySelector('#email');
-        let poruka = document.querySelector('#poruka');
-        let submit = document.querySelector('#submit');
+        const forma = document.querySelector('#kontaktForma');
+        const ime = document.querySelector('#ime');
+        const email = document.querySelector('#email');
+        const poruka = document.querySelector('#poruka');
+        const submit = document.querySelector('#submit');
         let err=0;
         function greska(input, vrednost){
             input.style.border = '2px solid red';
@@ -737,15 +739,15 @@ function contact(){
     }
 }
 
-function orders(){
+const orders =() =>{
 
-    if(url.indexOf('orders.html')!=-1){
+    if(pageLoc('orders.html')){
 
         function ispisMovieOrder(){
             let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
         
             if(movies.length != 0){
-                ajax('/assets/data/filmovi.json',function(data){
+                ajax(`${base}filmovi.json`,function(data){
                     ispisMovies(data);
                 });
                 
@@ -753,7 +755,8 @@ function orders(){
             if(movies.length !== null){
                 let html = `<div class="prazanLs"><p> You havent't booked any movies</p>
                 <p>Go to our movies page so you can choose some movie to enjoy</p></div>`;
-                document.querySelector('#orders').innerHTML = html;
+               
+                ispis('#orders',html);
             }
             function ispisMovies(data){
                 let result = data.filter(i=> {
@@ -764,16 +767,15 @@ function orders(){
                     }
                 });
                 console.log(result);
-                ispis(result);
-                
+                ispisEl(result);
             }   
 
-            function ispis(data){
+            function ispisEl(data){
                 let html='';
-                console.log(data);
-                console.log(movies);
-                // console.log(movies[0].projekcija);
-                // console.log(movies[0].brKarte);
+                // console.log(data);
+                // console.log(movies);
+                // // console.log(movies[0].projekcija);
+                // // console.log(movies[0].brKarte);
                 data.map(x => {
                     let idFilmaLs = movies.find(y => y.id == x.id);
                     
@@ -781,7 +783,7 @@ function orders(){
 
                     x.time = x.projekcija.find(p => p.idProjekcija == idFilmaLs.projekcija).vremePrikazivanja;
                 })
-                console.log(data);
+                // console.log(data);
 
                 data.forEach(i=>{
                     // console.log(i.projekcija[0].vremePrikazivanja);
@@ -789,27 +791,15 @@ function orders(){
                     <div class="filmBooked">
                         <img src="${i.img.src}" alt="${i.img.alt}"/>
                         <h2>${i.naslov}</h2>
-
-                        
-                        <p>${i.quantity}</p>
-
-                        <p>${i.time}</p>
-
-                        
-                       
-                        
-                            
-                           
-                        
-                        
-                    
-                        <p class="izbrisiLs" onclick="izbrisiLs(${i.id})">Delete</p>
-                      
+                        <p>Sum of booked tickets <span>${i.quantity}</span></p>
+                        <p>Projection time <span>${i.time}</span></p>
+                        <p class="izbrisiLs" onclick="izbrisiLs(${i.id})">Remove from orders</p>
                     </div>`;
                     
                 });
                 
-                document.querySelector('#orders').innerHTML=html;
+                ispis('#orders',html);
+
             }
             
         }
@@ -819,26 +809,26 @@ function orders(){
     }
     
 }
-function izbrisiLs(id){
+const izbrisiLs = (id) => {
 
     let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
     let filtriraj = movies.filter(movie=>movie.id !=id);
     localStorage.setItem('movieOrdersLs',JSON.stringify(filtriraj));
     orders();
     
- }
+}
 
 // footer
+const footer = () => {
 
-function footer(){
-    let klasa = document.querySelector('.latestMovies');
-    ajax('assets/data/filmovi.json',function(data){
-        let filmovi = data.naslov;
-        // console.log(data);
+    ajax(`${base}filmovi.json`,function(data){
+        ispisPrvihPetFilmova(data);
+       
+    });
+    function ispisPrvihPetFilmova(data){
         let broj = 0; 
         let htmlFooterFilmovi = '';
         for(let i of data){
-            console.log(i.naslov);
             broj++;
             htmlFooterFilmovi +=`<a href="movies.html">${i.naslov}</a>` 
             if(broj==5){
@@ -846,5 +836,5 @@ function footer(){
             }
         }
         ispis('#linksFoo',htmlFooterFilmovi);
-    })
+    }
 }
