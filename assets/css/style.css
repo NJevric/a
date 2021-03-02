@@ -695,6 +695,26 @@ footer #donjiFoo #desniBlok i{
     border-radius: 5px;
     
 }
+/* Orders */
+main #orders{
+    width:65%;
+    margin:0px auto;
+    padding:100px 0px;
+    display: flex;
+    justify-content:space-between;
+    flex-wrap: wrap;
+}
+main #orders .prazanLs p{
+    line-height: 2;
+}
+main #orders .filmBooked{
+    width:22%;
+    
+    margin-bottom: 50px;
+}
+main #orders .filmBooked img{
+    width:100%;
+}
 @media screen and (max-width:1440px){
     header #naslov{
         padding-top:200px;

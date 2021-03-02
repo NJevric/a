@@ -5,8 +5,10 @@ $(document).ready(function(){
     movies();
     calendar();
     contact();
+    orders();
     footer();
 
+    
   
 });
 
@@ -169,6 +171,7 @@ function movies(){
       
     if(url.indexOf('movies.html')!=-1){
         
+       
         
         function sort(){
            
@@ -439,6 +442,10 @@ function movies(){
         
         
         function ticket(){
+            
+           
+
+
             console.log('karta');
             let get = document.getElementsByClassName('get');
           
@@ -469,7 +476,7 @@ function movies(){
                 </div>
                 <div class="form-group">
                     <label for="broj">Ticket Sum</label>
-                    <input type="number" min="0" id="broj" name="broj" value="1">
+                    <input type="number" min="1" id="broj" name="broj" value="1">
                 </div>
                 <div class="form-group">
                     <label for="time">Screening time</label>
@@ -511,7 +518,93 @@ function movies(){
                 }
                 ispisProjekcije();
                 
+                function dohvatiPodatkeIzForme(){
+                    let forma = document.querySelector('#formaGetTicket');
+                    let film = document.querySelector('#imeFilm');
+                    let brojKarte = document.querySelector('#broj');
+                    let projekcija = document.querySelector('#time');
+                    let submit = document.querySelector('#submitTicket');
+                    console.log(projekcija);
+                    
+                    submit.addEventListener('click',function(e){
+                        e.preventDefault();
+                        
+                        if(film.value == 0){
+                            alert('You must choose movie in dropdown list');
+                            return false;
+                        }
+
+                        else{
+                            
+                            if(localStorage){
+                                addToOrders();
+                              
+                            }
+                            else{
+                                alert("Your Browser doesnt support localStorage");
+                            }
+                            
+                            return true;
+                        }
+
+                    });  
+
+                    
+                    function addToOrders(){
+
+                        let idFilmOrder = film.value;
+                        let brojKarteLs = brojKarte.value;
+                        let projekcijaLs = projekcija.value;
+
+                        let movies=JSON.parse(localStorage.getItem("movieOrdersLs"));
+                        
+                        
+                        if(movies){
+
+                            if(movies.filter(movie=>movie.id==idFilmOrder).length){
+                                //edit brKarte ili projekcije
+                                for(let i in movies){
+                                    if(movies[i].id == idFilmOrder) {
+                                    
+                                        movies[i].brKarte = brojKarteLs;
+                                        movies[i].projekcija = projekcijaLs;
+                                   
+                                    }   
+                                }
+                                localStorage.setItem('movieOrdersLs',JSON.stringify(movies));
+                            }
+                            else{
+                                // dodaj jos jedan film u ls ako postoji vec jedan
+                                                    
+                                movies.push({
+                                    id : idFilmOrder,
+                                    brKarte : brojKarteLs,
+                                    projekcija: projekcijaLs
+                                });
+                                localStorage.setItem('movieOrdersLs',JSON.stringify(movies));
+                            }
+                           
+                        }
+                        else{
+                            //dodaj film u ls
+                            let movieOrder = [];
+                                                
+                            movieOrder[0] = {
+                                id: idFilmOrder,
+                                brKarte : brojKarteLs,
+                                projekcija: projekcijaLs
+                            };
+                            localStorage.setItem('movieOrdersLs',JSON.stringify(movieOrder));
+                        }
+                        
+                        alert('Your order is in orders page');
+                        // location.reload();
+                    }
+                }
+                dohvatiPodatkeIzForme();
             }
+            
+
           
         }
         ticket();
@@ -644,6 +737,96 @@ function contact(){
     }
 }
 
+function orders(){
+
+    if(url.indexOf('orders.html')!=-1){
+
+        function ispisMovieOrder(){
+            let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
+        
+            if(movies.length != 0){
+                ajax('/assets/data/filmovi.json',function(data){
+                    ispisMovies(data);
+                });
+                
+            }
+            if(movies.length !== null){
+                let html = `<div class="prazanLs"><p> You havent't booked any movies</p>
+                <p>Go to our movies page so you can choose some movie to enjoy</p></div>`;
+                document.querySelector('#orders').innerHTML = html;
+            }
+            function ispisMovies(data){
+                let result = data.filter(i=> {
+                    for(let movie of movies){
+                        if(i.id == movie.id){
+                            return true;
+                        }
+                    }
+                });
+                console.log(result);
+                ispis(result);
+                
+            }   
+
+            function ispis(data){
+                let html='';
+                console.log(data);
+                console.log(movies);
+                // console.log(movies[0].projekcija);
+                // console.log(movies[0].brKarte);
+                data.map(x => {
+                    let idFilmaLs = movies.find(y => y.id == x.id);
+                    
+                    x.quantity = parseInt(idFilmaLs.brKarte);
+
+                    x.time = x.projekcija.find(p => p.idProjekcija == idFilmaLs.projekcija).vremePrikazivanja;
+                })
+                console.log(data);
+
+                data.forEach(i=>{
+                    // console.log(i.projekcija[0].vremePrikazivanja);
+                    html+=`
+                    <div class="filmBooked">
+                        <img src="${i.img.src}" alt="${i.img.alt}"/>
+                        <h2>${i.naslov}</h2>
+
+                        
+                        <p>${i.quantity}</p>
+
+                        <p>${i.time}</p>
+
+                        
+                       
+                        
+                            
+                           
+                        
+                        
+                    
+                        <p class="izbrisiLs" onclick="izbrisiLs(${i.id})">Delete</p>
+                      
+                    </div>`;
+                    
+                });
+                
+                document.querySelector('#orders').innerHTML=html;
+            }
+            
+        }
+        
+        ispisMovieOrder();
+ 
+    }
+    
+}
+function izbrisiLs(id){
+
+    let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
+    let filtriraj = movies.filter(movie=>movie.id !=id);
+    localStorage.setItem('movieOrdersLs',JSON.stringify(filtriraj));
+    orders();
+    
+ }
 
 // footer
 
@@ -651,7 +834,7 @@ function footer(){
     let klasa = document.querySelector('.latestMovies');
     ajax('assets/data/filmovi.json',function(data){
         let filmovi = data.naslov;
-        console.log(data);
+        // console.log(data);
         let broj = 0; 
         let htmlFooterFilmovi = '';
         for(let i of data){
