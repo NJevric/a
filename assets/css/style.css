@@ -714,6 +714,19 @@ main #orders .filmBooked{
 }
 main #orders .filmBooked img{
     width:100%;
+    margin-bottom: 20px;
+}
+main #orders .filmBooked p:nth-of-type(1){
+    margin-bottom: 10px;
+   margin-top:20px;
+}
+main #orders .filmBooked p:nth-of-type(3){
+    margin-top:20px;
+    font-weight: 600;
+ }
+main #orders .filmBooked img{
+    width:100%;
+    margin-bottom: 20px;
 }
 @media screen and (max-width:1440px){
     header #naslov{
@@ -754,7 +767,7 @@ main #orders .filmBooked img{
     header #naslov{
         padding-top:150px;
     }
-    header #naslov, main #about,main #komentari, main #projekcija,footer #wrapperFoo,main #filmovi,main #datumi,#contact,footer #donjiFoo
+    header #naslov, main #about,main #komentari, main #projekcija,footer #wrapperFoo,main #filmovi,main #datumi,#contact,footer #donjiFoo,main #orders
     {
         width:75%;
     }
@@ -764,6 +777,10 @@ main #orders .filmBooked img{
     main #about #tekst h2 {
         font-size: 3em;
     
+    }
+    main #orders .filmBooked {
+        width: 29%;
+        margin-bottom: 50px;
     }
 }
 @media screen and (max-width:1024px){
@@ -962,7 +979,13 @@ main #orders .filmBooked img{
         padding-bottom: 20px;
         width: 47%;
     }
-    
+    main #orders .filmBooked {
+        width: 45%;
+        margin-bottom: 50px;
+    }
+    main #orders .filmBooked h2{
+       
+    }
 }
 @media screen and (max-width:414px){
     main #datumi .datum {
@@ -1017,7 +1040,7 @@ main #orders .filmBooked img{
 }
 
 @media screen and (max-width:375px){
-    header #naslov, main #about, main #komentari, main #projekcija, footer #wrapperFoo, main #filmovi, main #datumi, #contact,#autor {
+    header #naslov, main #about, main #komentari, main #projekcija, footer #wrapperFoo, main #filmovi, main #datumi, #contact,#autor,main #orders {
         width: 90%;
     }
     #contact #forma form {
