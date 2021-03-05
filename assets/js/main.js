@@ -669,7 +669,7 @@ const movies = () => {
                                 brKarte : brojKarteLs,
                                 projekcija: projekcijaLs
                             };
-                            setLs('movieOrdersLs'),movieOrder;
+                            setLs('movieOrdersLs',movieOrder);
                         }
                         
                         alert('Your order is in orders page');
