@@ -40,6 +40,12 @@ const setLsItems = (data) => {
     let id = data.map(i=>i.id);
     localStorage.setItem('idFilm',JSON.stringify(id));
 }
+const setLs = (name, val) => {
+    return localStorage.setItem(name,JSON.stringify(val));
+}
+const getLs = (lsName) => {
+    return JSON.parse(localStorage.getItem(lsName));
+}
 
 // AJAX CALLBACK
 const ajax = (url,success) =>{
@@ -64,7 +70,6 @@ const ispis = (div,html) => {
     }
   
 }
-
 
 // navigacija
 const navigacija = () => {
@@ -228,6 +233,7 @@ const movies = () => {
             // ispis sort ddl
             ajax(`${base}sort.json`,(data) => {
                 sortIspis(data);
+                document.querySelector('#sort').value = getLs('sort');
             });   
 
             const sortIspis = (data) => {
@@ -242,12 +248,28 @@ const movies = () => {
                 htmlSort+=`</select>`;
 
                 ispis('#sortHtml',htmlSort);
+                
             }
         }
         sort();
        
         const filter = () => {
 
+            const filterChbLs = () => {
+                let filterLs = getLs('filter');
+                var checkbox = document.querySelectorAll("input[name=chb]");
+                if(filterLs!=null){
+                    console.log(filterLs);
+                    
+                    checkbox.forEach(i =>{
+                        if(filterLs.includes(i.value)){
+                            console.log(i.value);
+                            i.checked = true;
+                        }
+                    });
+                    
+                }
+            }
             const prikaziFilter = () =>{
                 document.querySelector('#pocetniPrikazFilter').addEventListener('click',() => {
                     document.querySelector('#zanrovi').classList.toggle('prikazZanr');
@@ -258,9 +280,11 @@ const movies = () => {
             prikaziFilter();
 
             ajax(`${base}filter.json`,(data) => {
+
                 filterIspis(data);
                 setFilterLogic(data);
-                    
+                filterChbLs();
+                
             });
 
             const filterIspis = (data) => {
@@ -279,8 +303,9 @@ const movies = () => {
                 var checkbox = document.querySelectorAll("input[name=chb]");
                 checkbox.forEach(i => {
                     i.addEventListener('change', filterLogic);
-                    
+
                 });
+               
             }
         }
 
@@ -325,7 +350,6 @@ const movies = () => {
                     }
 
                 htmlFilmovi+=`
-
                 </div>
                 <p>Duration ${i.trajanje.ispis}</p>
                 <p>Released ${i.datum.ispis}</p>
@@ -357,20 +381,28 @@ const movies = () => {
 
         
         let arrChb = [];
-        
+
         function filterLogic(){
            
+            if(getLs('filter')){
+                arrChb = getLs('filter');
+            }
+
             let izabran = this.value;
-    
+            
+            //ako postoji obrisi iz niza
             if(arrChb.includes(izabran)){
-                arrChb=arrChb.filter(i=>{
+                arrChb=arrChb.filter(i=>{ 
                     return i!=izabran;
                 });
             }
+            // upisi u niz
             else{
                 arrChb.push(izabran);
             }
-          
+
+            setLs('filter', arrChb);
+
             ajax('assets/data/filmovi.json',(data) => {
                     
                 ispisFiltriranihFilmova(data);
@@ -402,6 +434,7 @@ const movies = () => {
                 }
                 filmoviIspis(ispis);
                 setLsItems(ispis);
+
             }
         }
         
@@ -412,13 +445,17 @@ const movies = () => {
                 let arr = [];
                 ajax('assets/data/filmovi.json',(data) => {
 
+                    setSortLogic(data);
+                   
+                });
+                const setSortLogic = (data) => {
+
                     if(localStorage.getItem('idFilm')){
                         
                         let ls = localStorage.getItem('idFilm');
                         data = data.filter(i=>{
                             return localStorage.getItem('idFilm').includes(i.id);
                         });
-
 
                         data.sort((a, b)=>{  
                             return ls.indexOf(a.id) - ls.indexOf(b.id);
@@ -433,44 +470,54 @@ const movies = () => {
                         arr.sort(exec);
                     }
 
-                    // if(el.value == 0){
-                    //    sortiraj(function(a,b){
-                    //         return a.id-b.id;
-                    //    })
-                    // }
-                    if(el.value == 1){
-                        sortiraj((a,b) => {
-                            a = a.datum.date.split('.');
-                            b = b.datum.date.split('.');
-                            return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
-                        })
+                    switch(el.value) {
+                        case '0':
+                            sortiraj(function(a,b){
+                                return a.id-b.id;
+                           });
+                           break;
+                        case '1':
+                            sortiraj((a,b) => {
+                                a = a.datum.date.split('.');
+                                b = b.datum.date.split('.');
+                                return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
+                            });
+                            break;
+                        case '2':
+                            sortiraj((a,b) => {
+                                a = a.datum.date.split('.');
+                                b = b.datum.date.split('.');
+                                return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
+                            });
+                            break;
+                        case '3':
+                            sortiraj((a,b) =>{
+                                return a.trajanje.vreme-b.trajanje.vreme;
+                            });
+                            break;
+                        case '4':
+                            sortiraj((a,b) => {
+                                return b.trajanje.vreme - a.trajanje.vreme;
+                             });
+                             break;
+                        default:
+                            filmoviIspis(data);
                     }
-                    if(el.value == 2){
-                        sortiraj((a,b) => {
-                            a = a.datum.date.split('.');
-                            b = b.datum.date.split('.');
-                            return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
+                    
+                    const setSortLs = () => {
+                        let sortId =  document.querySelector('#sort');
+                        sortId.addEventListener('change',()=>{
+                             
+                            let vrednost  =sortId.value;
+                            setLs('sort',vrednost);
+                            
                         });
-                    }
-                    if(el.value == 3){
-                        sortiraj((a,b) =>{
-                            return a.trajanje.vreme-b.trajanje.vreme;
-                        });
-                    }
-                    if(el.value == 4){
-                        sortiraj((a,b) => {
-                           return b.trajanje.vreme - a.trajanje.vreme;
-                        });
-                    }
-                    else{
-                        filmoviIspis(data);
                     }
 
+                    setSortLs();
                     filmoviIspis(arr);
                     setLsItems(arr);
-                    
-                    
-                });
+                }
      
         }
         $("body").on("change","#sort",sortLogic);
@@ -597,7 +644,8 @@ const movies = () => {
                                    
                                     }   
                                 }
-                                localStorage.setItem('movieOrdersLs',JSON.stringify(movies));
+                                setLs('movieOrdersLs',movies);
+                             
                             }
                             else{
                                 // dodaj jos jedan film u ls ako postoji vec jedan
@@ -607,7 +655,8 @@ const movies = () => {
                                     brKarte : brojKarteLs,
                                     projekcija: projekcijaLs
                                 });
-                                localStorage.setItem('movieOrdersLs',JSON.stringify(movies));
+                         
+                                setLs('movieOrdersLs',movies);
                             }
                            
                         }
@@ -620,11 +669,11 @@ const movies = () => {
                                 brKarte : brojKarteLs,
                                 projekcija: projekcijaLs
                             };
-                            localStorage.setItem('movieOrdersLs',JSON.stringify(movieOrder));
+                            setLs('movieOrdersLs'),movieOrder;
                         }
                         
                         alert('Your order is in orders page');
-                        // location.reload();
+                        location.reload();
                     }
                 }
                 dohvatiPodatkeIzForme();
@@ -699,69 +748,74 @@ const contact = () =>{
         const submit = document.querySelector('#submit');
         let err=0;
 
-        const greska = (input, vrednost) => {
-            input.style.border = '2px solid red';
-            let div = input.parentElement;
-            let greskaPrikaz = div.querySelector('p');
-            greskaPrikaz.innerHTML = vrednost;
-            err=1;
-        }
-
-        const uspeh = (input) => {
-            input.style.border = '2px solid #19B5FE';
-        }
-
-        const obaveznaPolja = (arr) => {
-            arr.forEach(i=>{
-                console.log(arr);
-                if(i.value.trim()==''){
-                    greska(i,`Field is required`);
+        try{
+            const greska = (input, vrednost) => {
+                input.style.border = '2px solid red';
+                let div = input.parentElement;
+                let greskaPrikaz = div.querySelector('p');
+                greskaPrikaz.innerHTML = vrednost;
+                err=1;
+            }
+    
+            const uspeh = (input) => {
+                input.style.border = '2px solid #19B5FE';
+            }
+    
+            const obaveznaPolja = (arr) => {
+                arr.forEach(i=>{
+                    console.log(arr);
+                    if(i.value.trim()==''){
+                        greska(i,`Field is required`);
+                    }
+                    else{
+                        uspeh(i);
+                        return true;
+                    }
+                });
+            }
+    
+            const proveraDuzine = (input, min, max) => {
+                if(input.value.length < min){
+                    greska(input,`Field must contain min ${min} characters`);
+                }
+                else if(input.value.length > max){
+                    greska(input,`Field must contain max ${max} characters`);
                 }
                 else{
-                    uspeh(i);
+                    uspeh(input);
                     return true;
+                }
+            }
+    
+            const regProvera = (input,reg) => {
+                
+                if(!reg.test(input.value)){
+                    greska(input,'Invalid input');
+                }
+                else{
+                    uspeh(input);
+                    return true;
+                }
+            }
+            
+            submit.addEventListener('click',(e) => {
+                e.preventDefault();
+                obaveznaPolja([ime,email,poruka]);
+    
+                proveraDuzine(ime,3,80);
+                proveraDuzine(poruka,3,300);
+                regProvera(email,/^\w[.\d\w]*\@[a-z]{2,10}(\.[a-z]{2,3})+$/);
+                regProvera(ime,/^[A-ZŠĐŽČĆ][a-zšđžčć]{2,15}(\s[A-ZŠĐŽČĆ][a-zšđžčć]{2,15})*$/);
+            
+                if(err==0){
+                    alert("You've successfully sent us a message.");
+                    location.reload();
                 }
             });
         }
-
-        const proveraDuzine = (input, min, max) => {
-            if(input.value.length < min){
-                greska(input,`Field must contain min ${min} characters`);
-            }
-            else if(input.value.length > max){
-                greska(input,`Field must contain max ${max} characters`);
-            }
-            else{
-                uspeh(input);
-                return true;
-            }
+        catch(e){
+            console.log(e);
         }
-
-        const regProvera = (input,reg) => {
-            
-            if(!reg.test(input.value)){
-                greska(input,'Invalid input');
-            }
-            else{
-                uspeh(input);
-                return true;
-            }
-        }
-        
-        submit.addEventListener('click',(e) => {
-            e.preventDefault();
-            obaveznaPolja([ime,email,poruka]);
-
-            proveraDuzine(ime,3,80);
-            proveraDuzine(poruka,3,300);
-            regProvera(email,/^\w[.\d\w]*\@[a-z]{2,10}(\.[a-z]{2,3})+$/);
-            regProvera(ime,/^[A-ZŠĐŽČĆ][a-zšđžčć]{2,15}(\s[A-ZŠĐŽČĆ][a-zšđžčć]{2,15})*$/);
-        
-            if(err==0){
-                alert("You've successfully sent us a message.");
-                location.reload();
-            }
-        });
     }
 }
 
@@ -778,12 +832,8 @@ const orders =() =>{
                 });
                 
             }
-            if(movies.length !== null){
-                let html = `<div class="prazanLs"><p> You havent't booked any movies</p>
-                <p>Go to our movies page so you can choose some movie to enjoy</p></div>`;
-               
-                ispis('#orders',html);
-            }
+         
+           
             const ispisMovies = (data) => {
                 let result = data.filter(i=> {
                     for(let movie of movies){
@@ -824,7 +874,15 @@ const orders =() =>{
                 ispis('#orders',html);
 
             }
-            
+            const emptyOrder = () => {
+                if(movies.length !== null){
+                    let html = `<div class="prazanLs"><p> You havent't booked any movies</p>
+                    <p>Go to our movies page so you can choose some movie to enjoy</p></div>`;
+                   
+                    ispis('#orders',html);
+                }
+            }
+            emptyOrder();
         }
         
         ispisMovieOrder();
@@ -834,10 +892,19 @@ const orders =() =>{
 }
 const izbrisiLs = (id) => {
 
-    let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
-    let filtriraj = movies.filter(movie=>movie.id !=id);
-    localStorage.setItem('movieOrdersLs',JSON.stringify(filtriraj));
-    orders();
+    try{
+        let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
+        let filtriraj = movies.filter(movie=>movie.id !=id);
+        setLs('movieOrdersLs',filtriraj);
+        orders();
+        console.log(id);
+        if(id == null || id == undefined || id == NaN || typeof(id)!='number'){
+            throw(`Error: id -> ${id} is not in right format`);
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
     
 }
 
@@ -851,25 +918,21 @@ const footer = () => {
     const ispisPrvihPetFilmova = (data) => {
         let broj = 0; 
         let htmlFooterFilmovi = '';
-        for(let i of data){
-            broj++;
-            htmlFooterFilmovi +=`<a href="movies.html">${i.naslov}</a>` 
-            if(broj==5){
-                break;
+        try{
+            for(let i of data){
+                broj++;
+                htmlFooterFilmovi +=`<a href="movies.html">${i.naslov}</a>` 
+                if(broj==5){
+                    break;
+                }
             }
+            ispis('#linksFoo',htmlFooterFilmovi);
         }
-        ispis('#linksFoo',htmlFooterFilmovi);
+        catch(e){
+            console.log(e);
+        }
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 
