@@ -824,19 +824,21 @@ const orders =() =>{
     if(pageLoc('orders.html')){
 
         const ispisMovieOrder = () => {
-            let movies = JSON.parse(localStorage.getItem('movieOrdersLs'));
+
+           
+            let moviesBoocked = JSON.parse(localStorage.getItem('movieOrdersLs'));
         
-            if(movies.length != 0){
+            if(moviesBoocked.length != 0){
                 ajax(`${base}filmovi.json`,(data) => {
                     ispisMovies(data);
                 });
                 
             }
-         
+            
            
             const ispisMovies = (data) => {
                 let result = data.filter(i=> {
-                    for(let movie of movies){
+                    for(let movie of moviesBoocked){
                         if(i.id == movie.id){
                             return true;
                         }
@@ -850,7 +852,7 @@ const orders =() =>{
                 let html='';
              
                 data.map(x => {
-                    let idFilmaLs = movies.find(y => y.id == x.id);
+                    let idFilmaLs = moviesBoocked.find(y => y.id == x.id);
                     
                     x.quantity = parseInt(idFilmaLs.brKarte);
 
