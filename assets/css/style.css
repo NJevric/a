@@ -302,6 +302,7 @@ main #filmovi{
     margin-bottom: 50px;
 
 }
+
 #filmovi .film:nth-child(4){
     flex-wrap: after;
 }
@@ -310,21 +311,25 @@ main #filmovi{
 }
 
 #filmovi .film h2{
-    margin-bottom: 20px;
+    min-height:40px;
+    margin: 20px 0px;
+    font-size:1.4em;
 }
 #filmovi .film .genre{
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 10px;
 
 }
 #filmovi .film .genre p{
     background:rgba(207, 0, 15,0.7);
     text-align: center;
     border-radius: 2px;
-    padding:5px 10px;
+    padding:10px 15px;
     margin-bottom: 10px;
     margin-right: 10px;
      height:20px;
+     border-radius: 50px;
 }
 
 #filmovi .film p{
@@ -332,19 +337,20 @@ main #filmovi{
     font-size:.9em;
 }
 #filmovi .film p:nth-of-type(2){
-   margin-bottom: 20px;
+   margin-bottom: 30px;
 }
 #filmovi .film a{
    
     border:1px solid #CF000F;
-    padding:5px 20px;
+    padding:10px 20px;
     text-decoration: none;
     color:#fff;
     text-align: center;
     font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
     transition: .3s ease;
-    border-radius: 2px;
+    border-radius: 50px;
+    
 }
 #filmovi .film a:hover{
     
@@ -367,7 +373,7 @@ main #datumi{
 }
 main #datumi .datum{
     padding-bottom: 20px;
-    width:23%;
+    width:30%;
     
    
  
@@ -383,7 +389,7 @@ main #datumi .datum .projekcijaFilmova{
 main #datumi .datum .filmProjekcija{
     margin-bottom: 30px;
     margin-right: 50px;
-    width:18%;
+    width:80%!important;
     position:relative;
     padding-left: 20px;
    
@@ -479,11 +485,11 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
     letter-spacing: .6px;
 }
 #contact #forma form input{
-    height:38px;
+    height:42px;
     padding-left: 10px;
    
   width:100%;
-    background-color: rgba(17,17,17,0.9);
+    background-color: rgb(17,17,17);
     border:0px;
     color:#fff;
     border-radius: 3px;
@@ -493,7 +499,7 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
     height:150px;
     resize: none;
     border:0px;
-    background-color: rgba(17,17,17,.9);
+    background-color: rgb(17,17,17);
     border-radius: 3px;
     padding:10px;
     color:#fff;
@@ -501,9 +507,9 @@ main #datumi .datum .filmProjekcija .vremePrikaz p{
     margin-bottom:0px;
 }
 #contact #forma form input[type="submit"]{
-    background-color: rgba(207, 0, 15,0.8);
-    height:40px;
-    
+    background-color: rgb(207, 0, 15);
+    height:44px;
+    width:105%;
 }
  #mapa {
     width: 100%;
@@ -588,8 +594,7 @@ footer #gornjiFoo .logoFoo p{
 }
 footer #gornjiFoo .aboutFoo{
     width:250px;
-    line-height: 1.5;
-    font-size:1.05em;
+    line-height:1.5;
     letter-spacing: .7px;
     font-family: 'Open Sans', sans-serif;
 }
@@ -630,8 +635,11 @@ footer #donjiFoo #leviBlok{
     position:relative;
     left:0px;
     font-family: 'Open Sans', sans-serif;
+    display: flex;
 }
-
+footer #donjiFoo #leviBlok a{
+    margin-left:20px;
+}
 footer #donjiFoo #desniBlok{
     font-size:1.6em;
     position:relative;
@@ -641,7 +649,7 @@ footer #donjiFoo #desniBlok i{
     padding:0px 10px;
 }
 #getTicket{
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.9);
     height:100vh;
     width:100vw;
     display: none;
@@ -678,15 +686,15 @@ footer #donjiFoo #desniBlok i{
     font-weight: 600;
 }
 .form-group input,.form-group select{
-    height:32px;
+    height:36px;
     padding-left: 5px;
     border-radius: 5px;
     border:0px;
-    background:rgba(122, 95, 95, 0.5);
+    background:rgb(122, 95, 95);
     color:#fff;
 }
 #submitTicket{
-    height:38px;
+    height:40px;
     border:0px;
     width:100%;
     margin-top:10px;
@@ -792,6 +800,10 @@ main #orders .filmBooked img{
             left:0px;
         }
     }
+    #filmovi .film h2{
+        min-height:50px;
+        font-size:1.2em;
+    }
     nav #hamburger{
         display:block;
     }
@@ -861,8 +873,9 @@ main #orders .filmBooked img{
     #autor #tekstAutor {
         width: 100%;
     }
-    main #datumi .datum .filmProjekcija {
-        width: 25%;
+    main #datumi .datum {
+        padding-bottom: 20px;
+        width: 45%;
     }
     header #naslov #sortFilterTekst {
         font-size: 1.2em;
@@ -946,10 +959,12 @@ main #orders .filmBooked img{
         width: 45%;
     }
     #filmovi .film .genre {
-        min-height:100px;
+        min-height:60px;
     }
+    
     #filmovi .film .genre p{
         font-size:.85em;
+        padding:10px;
     }
     #getTicket #getTicketBlock {
         width: 70%;
@@ -983,9 +998,7 @@ main #orders .filmBooked img{
         width: 45%;
         margin-bottom: 50px;
     }
-    main #orders .filmBooked h2{
-       
-    }
+    
 }
 @media screen and (max-width:414px){
     main #datumi .datum {
@@ -1014,12 +1027,20 @@ main #orders .filmBooked img{
     footer #donjiFoo #leviBlok {
         font-size:.8em;
     }
-    
-    #filmovi .film .genre {
-        min-height: 125px;
+    #filmovi .film h2{
+        font-size:1.1em;
     }
-    #filmovi .film p:nth-of-type(2) {
-        margin-bottom: 10px;
+    #filmovi .film a {
+        
+        padding: 10px 15px;
+        font-size: .9em;
+    }
+    #filmovi .film .genre p {
+        font-size: .7em;
+        padding: 10px;
+    }
+    #filmovi .film .genre p:nth-of-type(2){
+        margin-right: 0px;
     }
     header #naslov, main #about, main #komentari, main #projekcija, footer #wrapperFoo, main #filmovi, main #datumi, #contact,#autor {
         width: 85%;
@@ -1053,8 +1074,8 @@ main #orders .filmBooked img{
         color: #333;
     }
     #getTicket #getTicketBlock {
-        width: 75%;
-        height: 75%;
+        width: 85%;
+        height: 70%;
       
         padding: 20px;
     }
@@ -1072,5 +1093,10 @@ main #orders .filmBooked img{
       
         padding: 5px;
 
+    }
+    #filmovi .film .genre p {
+        font-size: .7em;
+        border-radius: 20px;
+        padding:10px 5px;
     }
 }

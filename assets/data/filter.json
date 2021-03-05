@@ -26,5 +26,13 @@
     {
         "id":7,
         "prikaz":"thriller"
+    },
+    {
+        "id":8,
+        "prikaz":"documentary"
+    },
+    {
+        "id":9,
+        "prikaz":"animation"
     }
 ]

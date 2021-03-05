@@ -202,7 +202,7 @@ const index = () => {
 
         const komentari = () => {
             
-            let nizKomentari = [' ipsum dolor sit amet consectetur adipisicing elit. Natus, dicta.','Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum necessitatibus porro sit assumenda obcaecati non!','Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis delectus in tempora odit alias consectetur id velit ipsa iure excepturi. Maiores magni alias aperiam aliquid.'];
+            let nizKomentari = ['I always had an issue with theaters because they are too loud. Not this one! It is by no means quiet, just perfectly set volumes.', 'I love the seat-warmers! Especially in winter! Genius innovation! ','Mesmerising visual quality. And finally some healthy snacks!'];
 
             let htmlKomentar = '';
 
@@ -761,9 +761,9 @@ const contact = () =>{
                 input.style.border = '2px solid #19B5FE';
             }
     
-            const obaveznaPolja = (arr) => {
-                arr.forEach(i=>{
-                    console.log(arr);
+            const obaveznaPolja = (...args) => {
+                args.forEach(i=>{
+                    console.log(args);
                     if(i.value.trim()==''){
                         greska(i,`Field is required`);
                     }
@@ -787,10 +787,10 @@ const contact = () =>{
                 }
             }
     
-            const regProvera = (input,reg) => {
+            const regProvera = (input,reg,message) => {
                 
                 if(!reg.test(input.value)){
-                    greska(input,'Invalid input');
+                    greska(input,message);
                 }
                 else{
                     uspeh(input);
@@ -800,13 +800,19 @@ const contact = () =>{
             
             submit.addEventListener('click',(e) => {
                 e.preventDefault();
-                obaveznaPolja([ime,email,poruka]);
-    
-                proveraDuzine(ime,3,80);
+                obaveznaPolja(ime,email,poruka);
+           
+                let a = proveraDuzine(ime,3,80);
                 proveraDuzine(poruka,3,300);
-                regProvera(email,/^\w[.\d\w]*\@[a-z]{2,10}(\.[a-z]{2,3})+$/);
-                regProvera(ime,/^[A-ZŠĐŽČĆ][a-zšđžčć]{2,15}(\s[A-ZŠĐŽČĆ][a-zšđžčć]{2,15})*$/);
-            
+
+                if(a){
+                    regProvera(ime,/^[A-ZŠĐŽČĆ][a-zšđžčć]{2,15}(\s[A-ZŠĐŽČĆ][a-zšđžčć]{2,15})*$/,'Field musst start with uppercase');
+                }
+                
+                if(!obaveznaPolja(email)){
+                    regProvera(email,/^\w[.\d\w]*\@[a-z]{2,10}(\.[a-z]{2,3})+$/,'You must enter email format'); 
+                }
+               
                 if(err==0){
                     alert("You've successfully sent us a message.");
                     location.reload();
