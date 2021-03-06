@@ -1058,6 +1058,10 @@ main #orders .filmBooked img{
         font-size: 2.3em;
         
     }
+    #getTicket #getTicketBlock {
+        height:60%;
+        padding: 25px;
+    }
 }
 
 @media screen and (max-width:375px){
