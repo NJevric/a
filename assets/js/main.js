@@ -13,7 +13,6 @@ window.onload = () => {
     contact();
     orders();
     footer();
-
 };
 
 const base = 'assets/data/';
@@ -229,11 +228,15 @@ const movies = () => {
     if(pageLoc('movies.html')){
         
         const sort = () => {
-
+           
             // ispis sort ddl
             ajax(`${base}sort.json`,(data) => {
                 sortIspis(data);
-                document.querySelector('#sort').value = getLs('sort');
+                let lsSort = getLs('sort');
+                if(lsSort === null){
+                    lsSort = '0';
+                }
+                document.querySelector('#sort').value = lsSort;
             });   
 
             const sortIspis = (data) => {
